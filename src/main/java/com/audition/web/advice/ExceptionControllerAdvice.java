@@ -31,30 +31,23 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(HttpClientErrorException.class)
     ProblemDetail handleHttpClientException(final HttpClientErrorException e) {
-        return createProblemDetail(e, e.getStatusCode());
-
+        return createAndLogProblemDetail(e, e.getStatusCode());
     }
-
 
     @ExceptionHandler(Exception.class)
     ProblemDetail handleMainException(final Exception e) {
-        // TODO Add handling for Exception
         final HttpStatusCode status = getHttpStatusCodeFromException(e);
-        return createProblemDetail(e, status);
-
+        return createAndLogProblemDetail(e, status);
     }
 
     @ExceptionHandler(SystemException.class)
     ProblemDetail handleSystemException(final SystemException e) {
-        // TODO `Add Handling for SystemException
         final HttpStatusCode status = getHttpStatusCodeFromSystemException(e);
-        return createProblemDetail(e, status);
-
+        return createAndLogProblemDetail(e, status);
     }
 
 
-    private ProblemDetail createProblemDetail(final Exception exception,
-        final HttpStatusCode statusCode) {
+    private ProblemDetail createProblemDetail(final Exception exception, final HttpStatusCode statusCode) {
         final ProblemDetail problemDetail = ProblemDetail.forStatus(statusCode);
         problemDetail.setDetail(getMessageFromException(exception));
         if (exception instanceof SystemException) {
@@ -62,6 +55,12 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
         } else {
             problemDetail.setTitle(DEFAULT_TITLE);
         }
+        return problemDetail;
+    }
+
+    private ProblemDetail createAndLogProblemDetail(final Exception exception, final HttpStatusCode statusCode) {
+        final ProblemDetail problemDetail = createProblemDetail(exception, statusCode);
+        logger.logStandardProblemDetail(LOG, problemDetail, exception);
         return problemDetail;
     }
 
