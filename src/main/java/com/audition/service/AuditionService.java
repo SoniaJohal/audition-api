@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuditionService {
 
+    private final AuditionIntegrationClient auditionIntegrationClient;
+
     @Autowired
-    private AuditionIntegrationClient auditionIntegrationClient;
+    public AuditionService(final AuditionIntegrationClient auditionIntegrationClient) {
+        this.auditionIntegrationClient = auditionIntegrationClient;
+    }
 
     public List<AuditionPost> getPosts(final int page, final int pageSize) {
         final List<AuditionPost> allPosts =  auditionIntegrationClient.getPosts();

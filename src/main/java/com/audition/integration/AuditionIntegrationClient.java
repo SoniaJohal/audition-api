@@ -18,8 +18,12 @@ public class AuditionIntegrationClient {
     @Value("${audition.api.posts.url}")
     private String postsApiBaseUrl;
 
+    private final RestTemplate restTemplate;
+
     @Autowired
-    private RestTemplate restTemplate;
+    public AuditionIntegrationClient(final RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public List<AuditionPost> getPosts() {
         final String url = postsApiBaseUrl + "/posts";
