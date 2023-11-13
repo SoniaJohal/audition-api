@@ -28,7 +28,7 @@ public class AuditionIntegrationClient {
     }
 
     public AuditionPost getPostById(final String id) {
-        final String postByIdUrl = postsApiBaseUrl + "/" + id;
+        final String postByIdUrl = postsApiBaseUrl + "/posts/" + id;
         try {
            return restTemplate.getForObject(postByIdUrl, AuditionPost.class);
         } catch (final HttpClientErrorException e) {
