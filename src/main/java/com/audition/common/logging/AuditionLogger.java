@@ -38,12 +38,6 @@ public class AuditionLogger {
         }
     }
 
-    public void logErrorWithException(final Logger logger, final String message, final Exception e) {
-        if (logger.isErrorEnabled()) {
-            logger.error(message, e);
-        }
-    }
-
     public void logStandardProblemDetail(final Logger logger, final ProblemDetail problemDetail, final Exception e) {
         if (logger.isErrorEnabled()) {
             final var message = createStandardProblemDetailMessage(problemDetail);
@@ -77,7 +71,7 @@ public class AuditionLogger {
         return message.toString();
     }
 
-    private void appendMessage(StringBuilder builder, String key, String value) {
+    private void appendMessage(final StringBuilder builder, final String key, final String value) {
         builder.append(", ").append(key).append(": ").append(value);
     }
 

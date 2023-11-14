@@ -20,7 +20,7 @@ public class ResponseHeaderInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
         responseHeaderInjector.injectTraceAndSpanIds(response);
         return true;
     }

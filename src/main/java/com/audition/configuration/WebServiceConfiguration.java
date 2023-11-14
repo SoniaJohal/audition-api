@@ -1,5 +1,6 @@
 package com.audition.configuration;
 
+import com.audition.common.logging.AuditionLogger;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +26,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
+@SuppressWarnings("PMD.GuardLogStatement")
 public class WebServiceConfiguration implements WebMvcConfigurer {
 
     private static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
 
     private final ResponseHeaderInterceptor responseHeaderInterceptor;
 
+    private final AuditionLogger auditionLogger;
+
     @Autowired
-    public WebServiceConfiguration(final ResponseHeaderInterceptor responseHeaderInterceptor) {
+    public WebServiceConfiguration(final ResponseHeaderInterceptor responseHeaderInterceptor, final AuditionLogger auditionLogger) {
         this.responseHeaderInterceptor = responseHeaderInterceptor;
+        this.auditionLogger = auditionLogger;
     }
 
     @Bean
     @Primary
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
+        final ObjectMapper objectMapper = new ObjectMapper();
 
         // 1. Allows for date format as yyyy-MM-dd
-        objectMapper.setDateFormat(new SimpleDateFormat(YEAR_MONTH_DAY_PATTERN));
+        objectMapper.setDateFormat(new SimpleDateFormat(YEAR_MONTH_DAY_PATTERN, Locale.getDefault()));
 
         // 2. Does not fail on unknown properties
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -79,7 +85,7 @@ public class WebServiceConfiguration implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(responseHeaderInterceptor);
     }
 
@@ -91,18 +97,18 @@ public class WebServiceConfiguration implements WebMvcConfigurer {
 
     private ClientHttpRequestInterceptor loggingInterceptor() {
         // Log request details
-        final Logger LOG = LoggerFactory.getLogger(ClientHttpRequestInterceptor.class);
-        return (request, body, execution) -> {
-            LOG.info("Request URI: " + request.getURI());
-            LOG.info("Request Method: " + request.getMethod());
-            LOG.info("Request Headers: " + request.getHeaders());
+        final Logger logger = LoggerFactory.getLogger(ClientHttpRequestInterceptor.class);
 
-            // Continue with the execution of the request
-            ClientHttpResponse response = execution.execute(request, body);
+        return (request, body, execution) -> {
+            auditionLogger.info(logger, "Request URI: " + request.getURI());
+            auditionLogger.info(logger, "Request Method: " + request.getMethod());
+            auditionLogger.info(logger, "Request Headers: " + request.getHeaders());
+
+            final ClientHttpResponse response = execution.execute(request, body);
 
             // Log response details
-            LOG.info("Response Status Code: " + response.getStatusCode());
-            LOG.info("Response Headers: " + response.getHeaders());
+            auditionLogger.info(logger, "Response Status Code: " + response.getStatusCode());
+            auditionLogger.info(logger, "Response Headers: " + response.getHeaders());
 
             return response;
         };

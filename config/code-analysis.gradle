@@ -24,6 +24,7 @@ pmd {
 
     ignoreFailures = false
     ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
+    ruleSets = []
 }
 
 test {

@@ -39,10 +39,10 @@ public class AuditionService {
             return posts;
         }
 
-        int totalPages = (int) Math.ceil((double) posts.size() / size);
+        final int totalPages = (int) Math.ceil((double) posts.size() / size);
 
         // If page is greater than totalPages, then set page to total number of pages (last page)
-        int pageToReturn = page > totalPages ? totalPages : page;
+        final int pageToReturn = page > totalPages ? totalPages : page;
 
         final int fromIndex = (pageToReturn - 1) * size;
         final int toIndex = Math.min(fromIndex + size, posts.size());

@@ -29,7 +29,7 @@ public class AuditionIntegrationClient {
 
     public List<AuditionPost> getPosts() {
         final String url = postsApiBaseUrl + "/posts";
-        ResponseEntity<AuditionPost[]> responseEntity = restTemplate.getForEntity(url, AuditionPost[].class);
+        final ResponseEntity<AuditionPost[]> responseEntity = restTemplate.getForEntity(url, AuditionPost[].class);
         return Arrays.asList(responseEntity.getBody());
     }
 
@@ -44,7 +44,7 @@ public class AuditionIntegrationClient {
     }
 
     public AuditionPost getPostWithComments(final String id) {
-        final String postByIdUrl = postsApiBaseUrl + "/posts/" + id +"/comments";
+        final String postByIdUrl = postsApiBaseUrl + "/posts/" + id + "/comments";
         try {
             final AuditionPost auditionpost = getPostById(id);
             final ResponseEntity<PostComment[]> responseEntity = restTemplate.getForEntity(postByIdUrl, PostComment[].class);
@@ -58,13 +58,13 @@ public class AuditionIntegrationClient {
     }
 
     public List<PostComment> getCommentsByPostId(final String id) {
-        final String postByIdUrl = postsApiBaseUrl + "/comments"  ;
-        String url = UriComponentsBuilder.fromUriString(postByIdUrl)
+        final String postByIdUrl = postsApiBaseUrl + "/comments";
+        final String url = UriComponentsBuilder.fromUriString(postByIdUrl)
             .queryParam("postId", id)
             .build()
             .toUriString();
 
-       ResponseEntity<PostComment[]> responseEntity = restTemplate.getForEntity(url, PostComment[].class);
+       final ResponseEntity<PostComment[]> responseEntity = restTemplate.getForEntity(url, PostComment[].class);
        return Arrays.asList(responseEntity.getBody());
     }
 

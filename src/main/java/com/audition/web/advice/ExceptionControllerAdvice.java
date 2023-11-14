@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
+@SuppressWarnings("PMD.GuardLogStatement")
 public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     public static final String DEFAULT_TITLE = "API Error Occurred";
@@ -32,6 +33,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     @Autowired
     public ExceptionControllerAdvice(final AuditionLogger logger) {
+        super();
         this.logger = logger;
     }
 
