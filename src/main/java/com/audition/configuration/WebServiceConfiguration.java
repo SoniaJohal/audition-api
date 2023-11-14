@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -18,6 +19,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
@@ -25,6 +27,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebServiceConfiguration implements WebMvcConfigurer {
 
     private static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
+
+    private final ResponseHeaderInterceptor responseHeaderInterceptor;
+
+    @Autowired
+    public WebServiceConfiguration(final ResponseHeaderInterceptor responseHeaderInterceptor) {
+        this.responseHeaderInterceptor = responseHeaderInterceptor;
+    }
 
     @Bean
     @Primary
@@ -67,6 +76,11 @@ public class WebServiceConfiguration implements WebMvcConfigurer {
 
 
         return restTemplate;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(responseHeaderInterceptor);
     }
 
     private SimpleClientHttpRequestFactory createClientFactory() {

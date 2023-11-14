@@ -58,6 +58,7 @@ dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "io.micrometer:micrometer-registry-prometheus"
 
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:2.2.0.RELEASE'
 
     implementation "org.slf4j:slf4j-api:${slf4jVersion}"
     implementation "ch.qos.logback:logback-core:${logbackVersion}"

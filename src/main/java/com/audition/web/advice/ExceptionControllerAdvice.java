@@ -28,8 +28,12 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
     private static final String ERROR_MESSAGE = " Error Code from Exception could not be mapped to a valid HttpStatus Code - ";
     private static final String DEFAULT_MESSAGE = "API Error occurred. Please contact support or administrator.";
 
+    private final AuditionLogger logger;
+
     @Autowired
-    private AuditionLogger logger;
+    public ExceptionControllerAdvice(final AuditionLogger logger) {
+        this.logger = logger;
+    }
 
     @ExceptionHandler(HttpClientErrorException.class)
     ProblemDetail handleHttpClientException(final HttpClientErrorException e) {

@@ -2,6 +2,7 @@ package com.audition.service;
 
 import com.audition.integration.AuditionIntegrationClient;
 import com.audition.model.AuditionPost;
+import com.audition.model.PostComment;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,18 @@ public class AuditionService {
         return getPaginatedResults(allPosts, page, pageSize);
     }
 
+    public AuditionPost getPostById(final String postId) {
+        return auditionIntegrationClient.getPostById(postId);
+    }
+
+    public List<PostComment> getCommentsByPostId(final String postId) {
+        return auditionIntegrationClient.getCommentsByPostId(postId);
+    }
+
+    public AuditionPost getPostWithComments(final String postId) {
+        return auditionIntegrationClient.getPostWithComments(postId);
+    }
+
     private List<AuditionPost> getPaginatedResults(final List<AuditionPost> posts, final int page, final int size) {
         if (posts.size() <= size) {
             return posts;
@@ -34,10 +47,6 @@ public class AuditionService {
         final int fromIndex = (pageToReturn - 1) * size;
         final int toIndex = Math.min(fromIndex + size, posts.size());
         return posts.subList(fromIndex, toIndex);
-    }
-
-    public AuditionPost getPostById(final String postId) {
-        return auditionIntegrationClient.getPostById(postId);
     }
 
 }

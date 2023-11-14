@@ -1,6 +1,5 @@
 package com.audition.model;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,12 +11,12 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuditionPost {
+public class PostComment {
 
-    private int userId;
+    private int postId;
     private int id;
-    private String title;
+    private String name;
+    private String email;
     private String body;
-    private List<PostComment> comments;
 
 }
