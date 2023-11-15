@@ -38,9 +38,11 @@ public class AuditionIntegrationClient {
         try {
            return restTemplate.getForObject(postByIdUrl, AuditionPost.class);
         } catch (final HttpClientErrorException e) {
-            handleHttpClientErrorException(e, id);
+            if (isResourceNotFound(e)) {
+                throw buildResourceNotFoundSystemException(e, id);
+            }
+            throw e;
         }
-        return null;
     }
 
     public AuditionPost getPostWithComments(final String id) {
@@ -52,9 +54,11 @@ public class AuditionIntegrationClient {
             auditionpost.setComments(postComments);
             return auditionpost;
         } catch (final HttpClientErrorException e) {
-            handleHttpClientErrorException(e, id);
+            if (isResourceNotFound(e)) {
+                throw buildResourceNotFoundSystemException(e, id);
+            }
+            throw e;
         }
-        return null;
     }
 
     public List<PostComment> getCommentsByPostId(final String id) {
@@ -68,10 +72,11 @@ public class AuditionIntegrationClient {
        return Arrays.asList(responseEntity.getBody());
     }
 
-    private void handleHttpClientErrorException(final HttpClientErrorException e, final String id) {
-        if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-            throw new SystemException("Cannot find a Post with id " + id, "Resource Not Found", HttpStatus.NOT_FOUND.value());
-        }
-        throw e;
+    private boolean isResourceNotFound(final HttpClientErrorException e) {
+        return e.getStatusCode() == HttpStatus.NOT_FOUND;
+    }
+
+    private SystemException buildResourceNotFoundSystemException(final HttpClientErrorException e, final String id) {
+        return new SystemException("Cannot find a Post with id " + id, "Resource Not Found", HttpStatus.NOT_FOUND.value(), e);
     }
 }

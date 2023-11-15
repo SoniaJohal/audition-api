@@ -74,6 +74,14 @@ class AuditionIntegrationClientTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenGetPostEncountersError() {
+        Mockito.when(restTemplate.getForObject(POSTS_URL + POST_ID, AuditionPost.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        assertThrows(HttpClientErrorException.class, () -> auditionIntegrationClient.getPostById(POST_ID));
+    }
+
+    @Test
     void shouldFetchCommentsForPost() {
         final PostComment[] expectedComments = buildPostCommentsArray(1, 7);
         Mockito.when(restTemplate.getForEntity(BASE_URL +  "/comments?postId=" + POST_ID, PostComment[].class))
@@ -109,5 +117,13 @@ class AuditionIntegrationClientTest {
         assertEquals("Cannot find a Post with id " + POST_ID, systemException.getDetail());
         assertEquals("Resource Not Found", systemException.getTitle());
         assertEquals(HttpStatus.NOT_FOUND.value(), systemException.getStatusCode());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPostWithCommentsEncountersError() {
+        Mockito.when(restTemplate.getForObject(POSTS_URL + POST_ID, AuditionPost.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        assertThrows(HttpClientErrorException.class, () -> auditionIntegrationClient.getPostWithComments(POST_ID));
     }
 }

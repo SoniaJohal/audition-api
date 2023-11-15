@@ -1,7 +1,5 @@
 package com.audition;
 
-import static com.audition.util.AuditionApiTestUtil.buildExpectedErrorResponse;
-import static com.audition.util.AuditionApiTestUtil.verifyTraceAndSpanIDExists;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -156,6 +154,16 @@ class AuditionApplicationTests {
         assertEquals(5, response.getBody().getComments().size());
 
         verifyTraceAndSpanIDExists(response);
+    }
+
+    private String buildExpectedErrorResponse(final String title, final String message, final String instance, final int statusCode) {
+        return String.format("{\"type\":\"about:blank\",\"title\":\"%s\",\"status\":%d,\"detail\":\"%s\",\"instance\":\"/%s\"}",
+            title, statusCode, message, instance);
+    }
+
+    private void verifyTraceAndSpanIDExists(final ResponseEntity response) {
+        assertNotNull(response.getHeaders().get("X-Trace-Id"));
+        assertNotNull(response.getHeaders().get("X-Span-Id"));
     }
 
 }

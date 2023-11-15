@@ -70,6 +70,4 @@ Applicants need to do the following to submit their work:
   
 ---
 ## Additional Information based on the implementation
-
-This section MUST be completed by applicants. It allows applicants to showcase their view on how an application can/should be documented. 
-Applicants can choose to do this in a separate markdown file that needs to be included when the code is committed. 
+- See [INFO.md](/INFO.md)

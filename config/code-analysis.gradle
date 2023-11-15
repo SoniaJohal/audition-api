@@ -61,6 +61,8 @@ jacocoTestCoverageVerification {
     }
 }
 
+check.dependsOn jacocoTestCoverageVerification
+
 spotbugs {
     ignoreFailures = true
     effort = 'max'
