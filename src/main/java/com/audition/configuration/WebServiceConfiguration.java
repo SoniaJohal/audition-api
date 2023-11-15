@@ -80,7 +80,6 @@ public class WebServiceConfiguration implements WebMvcConfigurer {
         // loggingInterceptor that logs request/response for rest template calls.
         restTemplate.setInterceptors(Collections.singletonList(loggingInterceptor()));
 
-
         return restTemplate;
     }
 
@@ -100,15 +99,19 @@ public class WebServiceConfiguration implements WebMvcConfigurer {
         final Logger logger = LoggerFactory.getLogger(ClientHttpRequestInterceptor.class);
 
         return (request, body, execution) -> {
-            auditionLogger.info(logger, "Request URI: " + request.getURI());
-            auditionLogger.info(logger, "Request Method: " + request.getMethod());
-            auditionLogger.info(logger, "Request Headers: " + request.getHeaders());
+            final String requestDetails = String.format("Request Method: %s, Request URI: %s, Request Headers: %s",
+                request.getURI(), request.getMethod(), request.getHeaders()
+            );
+
+            auditionLogger.info(logger, requestDetails);
 
             final ClientHttpResponse response = execution.execute(request, body);
 
             // Log response details
-            auditionLogger.info(logger, "Response Status Code: " + response.getStatusCode());
-            auditionLogger.info(logger, "Response Headers: " + response.getHeaders());
+            final String responseDetails = String.format("Received response with Status Code: %s, Response Headers: %s",
+                response.getStatusCode(), response.getHeaders()
+            );
+            auditionLogger.info(logger, responseDetails);
 
             return response;
         };

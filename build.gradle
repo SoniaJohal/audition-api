@@ -8,6 +8,7 @@ plugins {
     id "io.freefair.lombok" version "8.0.1"
     id "checkstyle"
     id "pmd"
+    id "nebula.lint" version "17.1.1"
 }
 
 group = 'com.audition'
@@ -33,26 +34,25 @@ ext {
     set('slf4jVersion', "2.0.5")
     set('springdocVersion', "2.0.2")
     set('sleuthVersion', "2.2.0.RELEASE")
+    set('springdocOpenapiVersion', "1.6.4")
 }
 
 dependencies {
 
-    // TODO Clean up unused dependencies. Add comments on consideration on any improvements you made.
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.cloud:spring-cloud-starter-config"
     implementation "org.springframework.boot:spring-boot-starter-aop"
-    implementation "io.micrometer:micrometer-tracing-bridge-brave"
-    implementation "io.micrometer:micrometer-tracing"
-    implementation "io.micrometer:micrometer-registry-prometheus"
-    implementation "io.micrometer:context-propagation"
-    implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.4'
+    implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiVersion}"
 
-
+    // Moved below micrometer dependencies to runtime
     runtimeOnly "io.micrometer:micrometer-registry-prometheus"
+    runtimeOnly "io.micrometer:micrometer-tracing-bridge-brave"
+    runtimeOnly "io.micrometer:micrometer-tracing"
+    runtimeOnly "io.micrometer:micrometer-registry-prometheus"
+    runtimeOnly "io.micrometer:context-propagation"
 
     implementation "org.springframework.cloud:spring-cloud-starter-sleuth:${sleuthVersion}"
 
