@@ -9,9 +9,9 @@ Utilizing annotations such as `@Api`, `@ApiOperation`, `@ApiParam`, and `@Parame
 
 For instance, in this assignment I have used Swagger to document our APIs. Documentation is accessible via [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html).
 
-![Audition APIs](swagger-apis.png)
+![Audition APIs](images/swagger-apis.png)
 
-![GET posts API](posts-api.png)
+![GET posts API](images/posts-api.png)
 
 ### 2. Javadoc Comments
 In the codebase, detailed Javadoc comments elucidate the purpose, functionality, and usage of classes/methods. These annotations significantly benefit developers directly engaged with the code.
