@@ -4,6 +4,7 @@ import static com.audition.util.AuditionApiTestUtil.buildAuditionPost;
 import static com.audition.util.AuditionApiTestUtil.buildAuditionPosts;
 import static com.audition.util.AuditionApiTestUtil.buildPostComments;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.audition.integration.AuditionIntegrationClient;
 import com.audition.model.AuditionPost;
@@ -57,6 +58,19 @@ class AuditionServiceTest {
         assertEquals(10, response.size());
         assertEquals(11, response.get(0).getId());
         assertEquals(20, response.get(9).getId());
+    }
+
+
+    @Test
+    void shouldFetchFilteredPosts() {
+        final String title = "repellat";
+        Mockito.when(auditionIntegrationClient.getPosts()).thenReturn(buildAuditionPosts(5));
+
+        final List<AuditionPost> response = auditionService.getPostsFilteredByTitle(title, 1, 10);
+
+        assertEquals(5, response.size());
+        assertTrue(response.get(0).getTitle().contains(title));
+        assertTrue(response.get(4).getTitle().contains(title));
     }
 
     @Test

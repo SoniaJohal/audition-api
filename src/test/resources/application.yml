@@ -4,9 +4,24 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  sleuth:
+    enabled: true
+    reactor:
+      enabled: true
+    web:
+      enabled: true
+    async:
+      enabled: true
+    annotation:
+      enabled: true
+  zipkin:
+    enabled: true
 application:
   connection:
     read-timeout: 5000
     write-timeout: 5000
     connect-timeout: 5000
     response-timeout: 5000
+audition:
+  api:
+    posts.url: https://jsonplaceholder.typicode.com

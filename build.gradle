@@ -49,6 +49,8 @@ dependencies {
     implementation "io.micrometer:context-propagation"
     implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.4'
+
 
     runtimeOnly "io.micrometer:micrometer-registry-prometheus"
 

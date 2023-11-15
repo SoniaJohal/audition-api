@@ -58,8 +58,8 @@ The audition consists of multiple TODO statements scattered throughout the codeb
 - Complete all the TODO statements.
 - Add unit tests where applicants believe it to be necessary.
 - Make sure that all code quality check are completed.
-- Gradle build completes sucessfully.
-- Make sure the application if functional.
+- Gradle build completes successfully.
+- Make sure the application is functional.
 
 ## Submission process
 Applicants need to do the following to submit their work: 

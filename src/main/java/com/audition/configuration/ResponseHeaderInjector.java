@@ -18,7 +18,9 @@ public class ResponseHeaderInjector {
 
     public void injectTraceAndSpanIds(final HttpServletResponse response) {
         final Span currentSpan = tracer.currentSpan();
-        response.addHeader("X-Trace-Id", currentSpan.context().traceIdString());
-        response.addHeader("X-Span-Id", currentSpan.context().spanIdString());
+        final Span span = currentSpan == null ? tracer.nextSpan() : currentSpan;
+
+        response.addHeader("X-Trace-Id", span.context().traceIdString());
+        response.addHeader("X-Span-Id", span.context().spanIdString());
     }
 }
