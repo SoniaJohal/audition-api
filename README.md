@@ -70,4 +70,4 @@ Applicants need to do the following to submit their work:
   
 ---
 ## Additional Information based on the implementation
-- See [INFO.md](/INFO.md)
+- See [INFO.md](/INFO.md) and [SUBMISSION.md](/SUBMISSION.md)
